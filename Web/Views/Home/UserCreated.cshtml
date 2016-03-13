@@ -1,0 +1,16 @@
+﻿@model Web.Models.UserViewModel
+@{
+    ViewBag.Title = "User created";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("User", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>User created.</h4>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
