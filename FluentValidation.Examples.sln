@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{13F296B2-BA4B-43CA-9122-DC8D7FC9A035}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicValidation", "DynamicValidation\DynamicValidation.csproj", "{3EA965D5-F832-4A57-BD20-A44736939482}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{13F296B2-BA4B-43CA-9122-DC8D7FC9A035}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13F296B2-BA4B-43CA-9122-DC8D7FC9A035}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13F296B2-BA4B-43CA-9122-DC8D7FC9A035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA965D5-F832-4A57-BD20-A44736939482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA965D5-F832-4A57-BD20-A44736939482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA965D5-F832-4A57-BD20-A44736939482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA965D5-F832-4A57-BD20-A44736939482}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
