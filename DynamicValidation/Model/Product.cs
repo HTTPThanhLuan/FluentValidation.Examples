@@ -10,6 +10,6 @@ namespace DynamicValidation.Model
     {
         public string Name { get; set; }
 
-        public IEnumerable<IFieldValue> FieldValues { get; set; } 
+        public IEnumerable<FieldValue> FieldValues { get; set; } 
     }
 }

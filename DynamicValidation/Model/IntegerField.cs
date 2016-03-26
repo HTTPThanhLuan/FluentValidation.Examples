@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DynamicValidation.Validator
+namespace DynamicValidation.Model
 {
-    public interface IFieldValidator
+    public class IntegerField: Field
     {
+
     }
 }

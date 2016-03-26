@@ -11,7 +11,7 @@ namespace DynamicValidation.Validator
 {
     public class ProductValidator: AbstractValidator<Product>
     {
-        private IEnumerable<IField> _fields;
+        private IEnumerable<Field> _fields;
         private FieldValidatorFactory _fieldValidatorFactory;
 
         public ProductValidator()
@@ -19,12 +19,30 @@ namespace DynamicValidation.Validator
             _fields = FieldsProvider.GetFields();
             _fieldValidatorFactory = new FieldValidatorFactory();
 
-            RuleFor(p => p.Name);
-            Custom(p => ValidateFieldValues(p.FieldValues));
+            RuleFor(p => p.Name).NotEmpty();
+            RuleFor(p => p.FieldValues).SetValidator(new FieldValuesValidator(_fields, _fieldValidatorFactory));
         }
 
-        private ValidationFailure ValidateFieldValues(IEnumerable<IFieldValue> fieldValues)
+        public override ValidationResult Validate(Product instance)
         {
+            return base.Validate(instance);
+        }
+    }
+
+    public class FieldValuesValidator : AbstractValidator<IEnumerable<FieldValue>>
+    {
+        private IEnumerable<Field> _fields;
+        private FieldValidatorFactory _fieldValidatorFactory;
+
+        public FieldValuesValidator(IEnumerable<Field> fields, FieldValidatorFactory fieldValidatorFactory)
+        {
+            _fields = fields;
+            _fieldValidatorFactory = fieldValidatorFactory;
+        }
+
+        public override ValidationResult Validate(ValidationContext<IEnumerable<FieldValue>> context)
+        {
+            var fieldValues = context.InstanceToValidate;
             var validationResultList = new List<ValidationResult>();
 
             foreach (var fieldValue in fieldValues)
@@ -34,7 +52,8 @@ namespace DynamicValidation.Validator
                 validationResultList.Add(validationResult);
             }
 
-            return new ValidationResult();
+            var errors = validationResultList.SelectMany(el => el.Errors);
+            return new ValidationResult(errors);
         }
     }
 }

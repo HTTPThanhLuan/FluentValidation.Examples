@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace DynamicValidation.Model
 {
-    public class FieldValue
+    public class StringFieldValue: FieldValue
     {
-        public int FieldId { get; set; }
+        public StringField Field { get; set; }
+
+        public string Value { get; set; }
     }
 }

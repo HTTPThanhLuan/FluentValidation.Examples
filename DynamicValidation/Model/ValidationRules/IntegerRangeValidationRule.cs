@@ -1,6 +1,6 @@
-﻿namespace DynamicValidation.Model.ValidationRule
+﻿namespace DynamicValidation.Model.ValidationRules
 {
-    public class IntegerRangeValidationRule : IValidationRule
+    public class IntegerRangeValidationRule : ValidationRule
     {
         public IntegerRangeValidationRule(int min, int max)
         {

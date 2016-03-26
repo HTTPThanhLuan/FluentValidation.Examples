@@ -11,22 +11,22 @@ namespace DynamicValidation.Validator
 {
     public class FieldValidatorFactory
     {
-        private Dictionary<Type, Func<IField, IFieldValue, ValidationResult>> _fieldValidators;
+        private Dictionary<Type, Func<Field, FieldValue, ValidationResult>> _fieldValidators;
 
         public FieldValidatorFactory()
         {
             _fieldValidators =
-            new Dictionary<Type, Func<IField, IFieldValue, ValidationResult>>()
+            new Dictionary<Type, Func<Field, FieldValue, ValidationResult>>()
             {
-                [typeof(Field<int>)] = RunIntegerValidator,
-                [typeof(Field<string>)] = RunStringValidator
+                [typeof(IntegerField)] = RunIntegerValidator,
+                [typeof(StringField)] = RunStringValidator
             };
         }
 
-        private ValidationResult RunIntegerValidator(IField field, IFieldValue fieldValue)
+        private ValidationResult RunIntegerValidator(Field field, FieldValue fieldValue)
         {
-            var integerField = (Field<int>)field;
-            var integerFieldValue = (FieldValue<int>)fieldValue;
+            var integerField = (IntegerField)field;
+            var integerFieldValue = (IntegerFieldValue)fieldValue;
             var integerValidator = new IntegerFieldValidator(integerField);
 
             var validationResult = integerValidator.Validate(integerFieldValue.Value);
@@ -34,10 +34,10 @@ namespace DynamicValidation.Validator
             return validationResult;
         }
 
-        private ValidationResult RunStringValidator(IField field, IFieldValue fieldValue)
+        private ValidationResult RunStringValidator(Field field, FieldValue fieldValue)
         {
-            var stringField = (Field<string>) field;
-            var stringFieldValue = (FieldValue<string>) fieldValue;
+            var stringField = (StringField) field;
+            var stringFieldValue = (StringFieldValue) fieldValue;
             var integerValidator = new StringFieldValidator(stringField);
 
             var validationResult = integerValidator.Validate(stringFieldValue.Value);
@@ -45,7 +45,7 @@ namespace DynamicValidation.Validator
             return validationResult;
         }
 
-        public ValidationResult RunFieldValidatorForField(IField field, IFieldValue fieldValue)
+        public ValidationResult RunFieldValidatorForField(Field field, FieldValue fieldValue)
         {
             var fieldValidatorRunner = _fieldValidators[field.GetType()];
 

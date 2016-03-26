@@ -1,6 +1,6 @@
-﻿namespace DynamicValidation.Model.ValidationRule
+﻿namespace DynamicValidation.Model.ValidationRules
 {
-    public class StringRegexValidationRule : IValidationRule
+    public class StringRegexValidationRule : ValidationRule
     {
         public StringRegexValidationRule(string regex)
         {
