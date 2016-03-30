@@ -9,42 +9,31 @@ using FluentValidation;
 
 namespace DynamicValidation.Validator
 {
-    public class IntegerFieldValidator : AbstractValidator<int>, IFieldValidator
+public class IntegerFieldValidator : BaseFieldValidator<int>
+{
+    public IntegerFieldValidator(Field field) : base(field) { }
+
+    private Dictionary<Type, Action<ValidationRule, Field>> ruleDictionary;
+
+    protected override Dictionary<Type, Action<ValidationRule, Field>> RuleDictionary
     {
-        private Dictionary<Type, Action<ValidationRule, IntegerField>> _rulesDictionary;
-
-        public IntegerFieldValidator(IntegerField field)
+        get
         {
-            CreateDictionary();
-            AttachValidators(field);
-        }
-
-        private void AttachValidators(IntegerField field)
-        {
-            foreach (var validationRule in field.ValidationRules)
+            return ruleDictionary ?? (ruleDictionary = new Dictionary<Type, Action<ValidationRule, Field>>
             {
-                var validationRuleAction = _rulesDictionary[validationRule.GetType()];
-                validationRuleAction(validationRule, field);
-            }
-        }
-
-        private void CreateDictionary()
-        {
-            this._rulesDictionary =
-                new Dictionary<Type, Action<ValidationRule, IntegerField>>
-                {
-                    [typeof(IntegerRangeValidationRule)] = AddIntegerRangeValidationRule,
-                };
-        }
-
-        private void AddIntegerRangeValidationRule(ValidationRule validationRule, IntegerField field)
-        {
-            var rangeValidationRule = (IntegerRangeValidationRule) validationRule;
-
-            this.RuleFor(i => i)
-                .GreaterThan(rangeValidationRule.Min)
-                .LessThan(rangeValidationRule.Max)
-                .WithName(field.Name);
+                [typeof(IntegerRangeValidationRule)] = AddIntegerRangeValidationRule
+            });
         }
     }
+
+    private void AddIntegerRangeValidationRule(ValidationRule validationRule, Field field)
+    {
+        var rangeValidationRule = (IntegerRangeValidationRule) validationRule;
+
+        this.RuleFor(i => i)
+            .GreaterThan(rangeValidationRule.Min)
+            .LessThan(rangeValidationRule.Max)
+            .WithName(field.Name);
+    }
+}
 }

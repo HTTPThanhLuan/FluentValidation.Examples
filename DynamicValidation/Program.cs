@@ -14,28 +14,50 @@ namespace DynamicValidation
 
         static void Main(string[] args)
         {
-            Console.WriteLine("heheczka");
-            var product = new Product()
-            {
-                Name = "Implementing Domain-Driven Desing",
-                FieldValues = new FieldValue[]
-                {
-                    new StringFieldValue() { FieldId = 1, Value = "9780133039900" }
-                }
-            };
+var products = new Product[]
+{
+    new Product()
+    {
+        Name = "Book with wrong ISBN",
+        FieldValues = new FieldValue[]
+        {
+            new StringFieldValue() {FieldId = 1, Value = "12345"}
+        }
+    },
+    new Product()
+    {
+        Name = "Jewelry with wrong fineness",
+        FieldValues = new FieldValue[]
+        {
+            new IntegerFieldValue() {FieldId = 2, Value = 1500 }
+        }
+    }
+};
 
-            var validator = new ProductValidator();
-            var result = validator.Validate(product);
-            WriteValidationResults(result);
+foreach (var product in products)
+{
+    var validator = new ProductValidator();
+    var result = validator.Validate(product);
+    WriteValidationResults(product, result);
+}
+
 
             System.Console.ReadKey();
         }
 
-        static void WriteValidationResults(ValidationResult result)
+        static void WriteValidationResults(Product product, ValidationResult result)
         {
-            foreach (var error in result.Errors)
+            if (result.IsValid)
             {
-                System.Console.WriteLine(error.ErrorMessage);
+                Console.WriteLine($"Validation for product {product.Name} succeeded.");
+            }
+            else
+            {
+                Console.WriteLine($"Validation for product {product.Name} failed.");
+                foreach (var error in result.Errors)
+                {
+                    System.Console.WriteLine(error.ErrorMessage);
+                }
             }
         }
     }

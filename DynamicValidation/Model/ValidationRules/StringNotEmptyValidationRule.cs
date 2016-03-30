@@ -1,6 +1,4 @@
 ﻿namespace DynamicValidation.Model.ValidationRules
 {
-    public class StringNotEmptyValidationRule:ValidationRule
-    {
-    }
+public class StringNotEmptyValidationRule:ValidationRule {}
 }

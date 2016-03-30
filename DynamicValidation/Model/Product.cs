@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DynamicValidation.Model
 {
-    public class Product
-    {
-        public string Name { get; set; }
+public class Product
+{
+    public string Name { get; set; }
 
-        public IEnumerable<FieldValue> FieldValues { get; set; } 
-    }
+    public IEnumerable<FieldValue> FieldValues { get; set; } 
+}
 }

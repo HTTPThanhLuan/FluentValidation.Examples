@@ -61,7 +61,9 @@
     <Compile Include="Model\ValidationRules\StringNotEmptyValidationRule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validator\FieldValidatorFactory.cs" />
+    <Compile Include="Validator\BaseFieldValidator.cs" />
+    <Compile Include="Validator\FieldValidatorRunner.cs" />
+    <Compile Include="Validator\FieldValuesValidator.cs" />
     <Compile Include="Validator\StringFieldValidator.cs" />
     <Compile Include="Validator\IntegerFieldValidator.cs" />
     <Compile Include="Validator\ProductValidator.cs" />
