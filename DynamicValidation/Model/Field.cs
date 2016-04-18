@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicValidation.Model.ValidationRule;
+using DynamicValidation.Model.ValidationRules;
 
 namespace DynamicValidation.Model
 {
-    public interface IField
-    {
-        int Id { get; set; }
-        string Name { get; set; }
-    }
-
-    public class Field<T>: IField
+    public class Field
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public IEnumerable<IValidationRule> ValidationRules { get; set; }
+        public IEnumerable<ValidationRule> ValidationRules { get; set; }
     }
 }

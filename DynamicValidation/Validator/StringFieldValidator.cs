@@ -5,50 +5,38 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicValidation.Model;
-using DynamicValidation.Model.ValidationRule;
+using DynamicValidation.Model.ValidationRules;
 using FluentValidation;
-using IValidationRule = DynamicValidation.Model.ValidationRule.IValidationRule;
 
 namespace DynamicValidation.Validator
 {
-    public class StringFieldValidator : AbstractValidator<string>, IFieldValidator
+public class StringFieldValidator : BaseFieldValidator<string>
+{
+    public StringFieldValidator(Field field) : base(field) { }
+
+    private Dictionary<Type, Action<ValidationRule, Field>> ruleDictionary;
+
+    protected override Dictionary<Type, Action<ValidationRule, Field>> RuleDictionary
     {
-        private Dictionary<Type, Action<IValidationRule, IField>> _rulesDictionary;
-
-        public StringFieldValidator(Field<string> field)
+        get
         {
-            CreateDictionary();
-            AttachValidators(field);
-        }
-
-        private void AttachValidators(Field<string> field)
-        {
-            foreach (var validationRule in field.ValidationRules)
+            return ruleDictionary ?? (ruleDictionary =  new Dictionary<Type, Action<ValidationRule, Field>>
             {
-                var validationRuleAction = _rulesDictionary[validationRule.GetType()];
-                validationRuleAction(validationRule, field);
-            }
-        }
-
-        private void CreateDictionary()
-        {
-            this._rulesDictionary =
-                new Dictionary<Type, Action<IValidationRule, IField>>
-                {
-                    [typeof (StringNotEmptyValidationRule)] = AddStringNotEmptyValidationRule,
-                    [typeof (StringRegexValidationRule)] = AddStringStringRegexValidationRule
-                };
-        }
-
-        private void AddStringNotEmptyValidationRule(IValidationRule validationRule, IField field)
-        {
-            this.RuleFor(s => s).NotEmpty().WithName(field.Name);
-        }
-
-        private void AddStringStringRegexValidationRule(IValidationRule validationRule, IField field)
-        {
-            var regexValidationRule = (StringRegexValidationRule) validationRule;
-            this.RuleFor(s => s).Matches(regexValidationRule.Regex).WithName(field.Name);
+                [typeof(StringNotEmptyValidationRule)] = AddStringNotEmptyValidationRule,
+                [typeof(StringRegexValidationRule)] = AddStringStringRegexValidationRule
+            });
         }
     }
+
+    private void AddStringNotEmptyValidationRule(ValidationRule validationRule, Field field)
+    {
+        this.RuleFor(s => s).NotEmpty().WithName(field.Name);
+    }
+
+    private void AddStringStringRegexValidationRule(ValidationRule validationRule, Field field)
+    {
+        var regexValidationRule = (StringRegexValidationRule) validationRule;
+        this.RuleFor(s => s).Matches(regexValidationRule.Regex).WithName(field.Name);
+    }
+}
 }

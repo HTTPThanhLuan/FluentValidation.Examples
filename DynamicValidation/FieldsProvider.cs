@@ -4,36 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicValidation.Model;
-using DynamicValidation.Model.ValidationRule;
+using DynamicValidation.Model.ValidationRules;
 
 namespace DynamicValidation
 {
-    public static class FieldsProvider
+public static class FieldsProvider
+{
+    public static IEnumerable<Field> GetFields()
     {
-        public static IEnumerable<IField> GetFields()
+        return new Field[]
         {
-            return new IField[]
+            new StringField() 
             {
-                new Field<string>()
+                Id = 1,
+                Name = "ISBN",
+                ValidationRules = new ValidationRule[]
                 {
-                    Id = 1,
-                    Name = "ISBN",
-                    ValidationRules = new IValidationRule[]
-                    {
-                        new StringNotEmptyValidationRule(),
-                        new StringRegexValidationRule(@"ISBN(-1(?:(0)|3))?:?\x20+(?(1)(?(2)(?:(?=.{13}$)\d{1,5}([ -])\d{1,7}\3\d{1,6}\3(?:\d|x)$)|(?:(?=.{17}$)97(?:8|9)([ -])\d{1,5}\4\d{1,7}\4\d{1,6}\4\d$))|(?(.{13}$)(?:\d{1,5}([ -])\d{1,7}\5\d{1,6}\5(?:\d|x)$)|(?:(?=.{17}$)97(?:8|9)([ -])\d{1,5}\6\d{1,7}\6\d{1,6}\6\d$)))"),
-                    }
-                },
-                new Field<int>()
-                {
-                    Id = 2,
-                    Name = "Fineness ",
-                    ValidationRules = new IValidationRule[]
-                    {
-                        new IntegerRangeValidationRule(0, 1000)
-                    }
+                    new StringNotEmptyValidationRule(),
+                    new StringRegexValidationRule(@"^(97(8|9))?\d{9}(\d|X)$"),
                 }
-            };
-        } 
-    }
+            },
+            new IntegerField() 
+            {
+                Id = 2,
+                Name = "Fineness ",
+                ValidationRules = new ValidationRule[]
+                {
+                    new IntegerRangeValidationRule(0, 1000)
+                }
+            }
+        };
+    } 
+}
 }

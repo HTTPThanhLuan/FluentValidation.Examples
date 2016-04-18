@@ -9,32 +9,12 @@ using FluentValidation.Results;
 
 namespace DynamicValidation.Validator
 {
-    public class ProductValidator: AbstractValidator<Product>
+public class ProductValidator: AbstractValidator<Product>
+{
+    public ProductValidator()
     {
-        private IEnumerable<IField> _fields;
-        private FieldValidatorFactory _fieldValidatorFactory;
-
-        public ProductValidator()
-        {
-            _fields = FieldsProvider.GetFields();
-            _fieldValidatorFactory = new FieldValidatorFactory();
-
-            RuleFor(p => p.Name);
-            Custom(p => ValidateFieldValues(p.FieldValues));
-        }
-
-        private ValidationFailure ValidateFieldValues(IEnumerable<IFieldValue> fieldValues)
-        {
-            var validationResultList = new List<ValidationResult>();
-
-            foreach (var fieldValue in fieldValues)
-            {
-                var field = _fields.First(f => f.Id == fieldValue.FieldId);
-                var validationResult = _fieldValidatorFactory.RunFieldValidatorForField(field, fieldValue);
-                validationResultList.Add(validationResult);
-            }
-
-            return new ValidationResult();
-        }
+        RuleFor(p => p.Name).NotEmpty();
+        RuleFor(p => p.FieldValues).SetValidator(new FieldValuesValidator());
     }
+}
 }
