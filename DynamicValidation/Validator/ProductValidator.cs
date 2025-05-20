@@ -9,12 +9,12 @@ using FluentValidation.Results;
 
 namespace DynamicValidation.Validator
 {
-public class ProductValidator: AbstractValidator<Product>
-{
-    public ProductValidator()
+    public class ProductValidator : AbstractValidator<Product>
     {
-        RuleFor(p => p.Name).NotEmpty();
-        RuleFor(p => p.FieldValues).SetValidator(new FieldValuesValidator());
+        public ProductValidator()
+        {
+            RuleFor(p => p.Name).NotEmpty();
+            RuleFor(p => p.FieldValues).SetValidator(new FieldValuesValidator());
+        }
     }
-}
 }

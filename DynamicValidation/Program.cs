@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicValidation.Model;
 using DynamicValidation.Validator;
+using FluentValidation;
 using FluentValidation.Results;
 
 namespace DynamicValidation
@@ -14,32 +15,34 @@ namespace DynamicValidation
 
         static void Main(string[] args)
         {
-var products = new Product[]
-{
-    new Product()
-    {
-        Name = "Book with wrong ISBN",
-        FieldValues = new FieldValue[]
-        {
-            new StringFieldValue() {FieldId = 1, Value = "12345"}
-        }
-    },
-    new Product()
-    {
-        Name = "Jewelry with wrong fineness",
-        FieldValues = new FieldValue[]
-        {
-            new IntegerFieldValue() {FieldId = 2, Value = 1500 }
-        }
-    }
-};
+            var products = new Product[]
+            {
+                new Product()
+                {
+                    Name = "Book with wrong ISBN",
+                    FieldValues = new FieldValue[]
+                    {
+                        new StringFieldValue() {FieldId = 1, Value = "12345"}
+                    }
+                },
+                new Product()
+                {
+                    Name = "Jewelry with wrong fineness",
+                    FieldValues = new FieldValue[]
+                    {
+                        new IntegerFieldValue() {FieldId = 2, Value = 1500 }
+                    }
+                }
+            };
 
-foreach (var product in products)
-{
-    var validator = new ProductValidator();
-    var result = validator.Validate(product);
-    WriteValidationResults(product, result);
-}
+            foreach (var product in products)
+            {
+               // var validator = new ProductValidator();
+               // var result = validator.Validate(product);
+               // WriteValidationResults(product, result);
+            }
+
+
 
 
             System.Console.ReadKey();

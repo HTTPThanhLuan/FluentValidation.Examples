@@ -8,32 +8,34 @@ using DynamicValidation.Model.ValidationRules;
 
 namespace DynamicValidation
 {
-public static class FieldsProvider
-{
-    public static IEnumerable<Field> GetFields()
+    public static class FieldsProvider
     {
-        return new Field[]
+        public static IEnumerable<Field> GetFields()
         {
-            new StringField() 
+            return new Field[]
             {
-                Id = 1,
-                Name = "ISBN",
-                ValidationRules = new ValidationRule[]
+                new Field()
                 {
-                    new StringNotEmptyValidationRule(),
-                    new StringRegexValidationRule(@"^(97(8|9))?\d{9}(\d|X)$"),
-                }
-            },
-            new IntegerField() 
-            {
-                Id = 2,
-                Name = "Fineness ",
-                ValidationRules = new ValidationRule[]
+                    Id = 1,
+                    Name = "ISBN",
+                    Type = typeof(string),
+                    ValidationRules = new ValidationRule[]
+                    {
+                        new StringNotEmptyValidationRule(),
+                        new StringRegexValidationRule(@"^(97(8|9))?\d{9}(\d|X)$"),
+                    }
+                },
+                new Field()
                 {
-                    new IntegerRangeValidationRule(0, 1000)
+                    Id = 2,
+                    Name = "Fineness ",
+                    Type =typeof(int),
+                    ValidationRules = new ValidationRule[]
+                    {
+                        new IntegerRangeValidationRule(0, 1000)
+                    }
                 }
-            }
-        };
-    } 
-}
+            };
+        }
+    }
 }

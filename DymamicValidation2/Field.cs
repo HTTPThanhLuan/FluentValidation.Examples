@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicValidation.Model.ValidationRules;
+
+using RulesEngine.Models;
 
 namespace DynamicValidation.Model
 {
@@ -18,8 +19,8 @@ namespace DynamicValidation.Model
         /// </summary>
         public Type Type { get; set; }
 
-        public IEnumerable<ValidationRule> ValidationRules { get; set; }
+        public IEnumerable<Rule> ValidationRules { get; set; }
 
-        public string ValidationRule { get; set; }
+       
     }
 }

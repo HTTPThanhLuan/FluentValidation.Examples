@@ -1,0 +1,93 @@
+﻿@page "/counter"
+@using DynamicValidation
+@using DynamicValidation.Model
+@using DynamicValidation.Validator
+@rendermode InteractiveServer
+
+<PageTitle>Counter</PageTitle>
+
+
+@foreach (var propName in propertyNames)
+{
+    <div>
+        <label>@propName</label>
+        <input value="@GetPropertyValue(propName)"
+               @oninput="e => SetPropertyValue(propName, e.Value?.ToString())" />
+        @if (validationMessages.TryGetValue(propName, out IList<string> message) && message.Count>0)
+        {
+            <div style="color:red">@(String.Join(",",message))</div>
+        }
+           </div>
+}
+<input type="button" value="Save" @onclick=Save /> 
+@code {
+    private FormField<string> Name { get; set; } = new FormField<string>();
+    private FormField<int> Age { get; set; } = new FormField<int>();
+    private object myInstance;
+    private Type myType;
+    private List<string> propertyNames = new();
+    private Dictionary<string, IList<string>> validationMessages = new();
+    ObjectValidator objectValidator = new ObjectValidator();
+    protected override void OnInitialized()
+    {
+       var fields = FieldsProvider.GetFields();
+         myType = DynamicClassBuilder.CreateDynamicClass("DynamicClass", FieldsProvider.GetFields().ToList());
+         myInstance = Activator.CreateInstance(myType);
+         propertyNames = myType.GetProperties().Select(p => p.Name).ToList();
+       
+    }
+    private async Task Save()
+    {
+       
+        var validationResult = await objectValidator.Validate(myInstance, FieldsProvider.GetFields().ToList());
+
+     
+
+        // Example: If validationResult is Dictionary<string, string>
+        validationMessages = validationResult.Errors;
+
+        // If it's a list, convert to dictionary:
+        // validationMessages = validationResult.ToDictionary(e => e.PropertyName, e => e.Message);
+
+        StateHasChanged();
+    }
+
+    private object GetPropertyValue(string propertyName)
+    {
+        return myType.GetProperty(propertyName)?.GetValue(myInstance);
+    }
+
+    private async Task SetPropertyValue(string propertyName, object value)
+    {
+        var prop = myType.GetProperty(propertyName);
+        if (prop != null)
+        {
+            // Convert value to property type if needed
+            var converted = Convert.ChangeType(value, prop.PropertyType);
+            prop.SetValue(myInstance, converted);
+            validationMessages[propertyName] = new List<string>(); // Clear message on input
+
+
+            var validationResult = await objectValidator.Validate(myInstance, FieldsProvider.GetFields().ToList());                    
+            validationMessages = validationResult.Errors;
+            StateHasChanged();
+        }
+    }
+    public class Form
+    {
+        public ICollection<IFormField> Fields { get; set; }
+    }
+
+    public interface IFormField
+    {
+        //public int ControlType { get; set; }
+    }
+
+    public class FormField<T> : IFormField
+    {
+        public int ControlType { get; set; }
+        public T Value { get; set; }
+    }
+
+    
+}
